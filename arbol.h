@@ -1,7 +1,9 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifndef _ARBOL
 #define _ARBOL
-#include <stdbool.h>
-
 
 typedef struct nodo{
     struct nodo* hijos,*next;
@@ -10,7 +12,7 @@ typedef struct nodo{
     char *significado;
 }Node;
 
-
+static Node* CreaNodo(char letra, char *significado);
 
 
 #endif
