@@ -15,5 +15,7 @@ typedef struct nodo{
 
 static Node* CreaNodo(char letra, char *significado);
 
+static Node* AñadirLetra(char letra);
+
 
 #endif
