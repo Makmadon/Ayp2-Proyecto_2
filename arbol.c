@@ -8,4 +8,9 @@ static Node* CreaNodo(char letra, char *significado){
     strcpy(newp->significado,significado);
     newp->hijos=NULL;
     newp->next=NULL;
+    return newp;
+}
+
+static Node* AñadirLetra(char letra){
+
 }
