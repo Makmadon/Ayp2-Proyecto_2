@@ -13,9 +13,11 @@ typedef struct nodo{
     char *significado;
 }Node;
 
-static Node* CreaNodo(char letra, char *significado);
+static Node* CreaNodo(char letra);
 
-static Node* AñadirLetra(char letra);
+static bool busca(char letra, Node *dic);
+
+static Node* AñadirPalabra(char* palabra, char *significado, Node *dic);
 
 
 #endif
