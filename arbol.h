@@ -18,7 +18,7 @@ typedef struct nodo{
     Significado *significado;
 }Node;
 
-static Node* CreaNodo(char letra);
+static Node* CreaNodo();
 
 static Node* AñadirPalabra(char* palabra, char* significado, Node* dic);
 
