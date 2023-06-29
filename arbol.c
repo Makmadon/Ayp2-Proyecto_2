@@ -17,6 +17,8 @@ static *CreaSignificado(char *significado){
     newp=(Significado*)malloc(sizeof(Significado));
     strcpy(newp->significado,significado);
     newp->next=NULL;
+    newp->significado=(char*)malloc(sizeof(char)*(int)strlen(significado));
+    strcpy(newp->significado,significado);
     return newp;
 }
 
@@ -40,5 +42,45 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
     return dic;
 }   
 
+static void EliminaSignificado(Significado* sig){
+    if(!sig)
+        return;
+    EliminaSignificado(sig->next);
+    free(sig->significado);
+}
 
+static void* Elimina(Node* dic){
+    if(!dic){
+        return;
+    }
+    if(dic->es_palabra){
+        EliminaSignificado(dic->significado);
+    }
+    for(int i=0;i<26;i++){
+        if(dic->hijos[i]!=NULL)
+            Elimina(dic->hijos[i]);
+        free(dic->hijos[i]);
+    }
+    free(dic);
+    dic=NULL;
+    return;
+}
+
+Node* Cargar(Node* dic,char *N_archivo){
+    char *palabra,*significado;
+    if(dic){
+        Elimina(dic);
+    }
+    FILE *Archivo=fopen(N_archivo,"r");
+    if(!Archivo){
+        printf("\nError al abrir archivo\n");
+        return NULL;
+    }
+    while ((fscanf(N_archivo,"%s",palabra))!=EOF)
+    {
+        
+    }
+    
+
+}
 

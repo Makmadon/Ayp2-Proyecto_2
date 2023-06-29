@@ -22,5 +22,10 @@ static Node* CreaNodo();
 
 static Node* AñadirPalabra(char* palabra, char* significado, Node* dic);
 
+static void* Elimina(Node* dic);
+
+Node* Cargar(Node* dic, char* N_archivo);
+
+
 
 #endif
