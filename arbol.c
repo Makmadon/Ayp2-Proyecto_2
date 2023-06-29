@@ -1,40 +1,44 @@
 #include "arbol.h"
+#define indice(a) ((int)tolower (a) - 'a')
 
-static Node* CreaNodo(char letra){
+
+static Node* CreaNodo(){
     Node *newp;
-    if((newp=(Node*)malloc(sizeof(Node)))==NULL)
-        return NULL;
+    newp=(Node*)malloc(sizeof(Node));
+    for(int i=0;i<26;i++)
+        newp->hijos[i]=NULL;
     newp->es_palabra=false;
-    newp->letra=letra;
-    newp->hijos=NULL;
+    newp->significado->significado=NULL;
+    return newp;
+}
+
+static *CreaSignificado(char *significado){
+    Significado *newp;
+    newp=(Significado*)malloc(sizeof(Significado));
+    strcpy(newp->significado,significado);
     newp->next=NULL;
     return newp;
 }
 
-static bool busca(char letra, Node* dic){
-    if (!dic)
-        return false;
-    if (dic->letra==letra)
-        return true;
-    return busca(letra,dic->next);
-}
-
-
-static Node* AñadirPalabra(char* palabra, char* significado, Node *dic){
-    Node* p=dic,*newp;
-    
+static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
+    Node* p;
+    int indice;
+    if(!dic)
+        dic=CreaNodo();
+    p=dic;
     for(int i=0;i<strlen(palabra);i++){
-        int j=0;
-        if(!busca(palabra[i],p)){
-            newp=CreaNodo(palabra[i]);
-            newp->next=p;
-            break;
-            for(;newp->letra<p->letra;p=p->next);
-        }
-
-
-
-
+        if (isalpha(palabra[i]))
+            indice=indice(palabra[i]);
+        
+        if (p->hijos[indice] == NULL){
+            p->hijos[indice]=CreaNodo;
+        }else
+        p=p->hijos[indice];
     }
-    
-}
+    p->es_palabra=1;
+    strcpy(p->significado->significado,significado);
+    return dic;
+}   
+
+
+
