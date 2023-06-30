@@ -12,13 +12,19 @@ static Node* CreaNodo(){
     return newp;
 }
 
-static *CreaSignificado(char *significado){
+static Significado* CreaSignificado(char *significado){
     Significado *newp;
     newp=(Significado*)malloc(sizeof(Significado));
     strcpy(newp->significado,significado);
     newp->next=NULL;
     newp->significado=(char*)malloc(sizeof(char)*(int)strlen(significado));
     strcpy(newp->significado,significado);
+    return newp;
+}
+
+static Significado *AñadeSignificado(char *significado, Significado* list){
+    Significado *newp=CreaSignificado(significado);
+    newp->next=list;
     return newp;
 }
 
@@ -38,7 +44,7 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
         p=p->hijos[indice];
     }
     p->es_palabra=1;
-    strcpy(p->significado->significado,significado);
+    p->significado->significado=CreaSignificado(significado);
     return dic;
 }   
 
@@ -78,7 +84,11 @@ Node* Cargar(Node* dic,char *N_archivo){
     }
     while ((fscanf(N_archivo,"%s",palabra))!=EOF)
     {
-        
+        fgets(significado,200,N_archivo);
+        if(palabra=='+'){
+
+        }
+
     }
     
 

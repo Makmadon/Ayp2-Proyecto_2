@@ -20,7 +20,13 @@ typedef struct nodo{
 
 static Node* CreaNodo();
 
+static Significado* CreaSignificado(char *significado);
+
+static Significado *AñadeSignificado(char *significado, Significado* list);
+
 static Node* AñadirPalabra(char* palabra, char* significado, Node* dic);
+
+static void EliminaSignificado(Significado* sig);
 
 static void* Elimina(Node* dic);
 
