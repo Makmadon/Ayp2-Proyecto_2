@@ -31,6 +31,7 @@ static void* Elimina(Node* dic);
 
 Node* Cargar(Node* dic, char* N_archivo);
 
+static Significado *ObtenerSignificados(Node* dic, char* palabra);
 
 
 #endif

@@ -97,3 +97,33 @@ Node* Cargar(Node* dic,char *N_archivo){
 
 }
 
+static Significado *ObtenerSignificados(Node* dic, char *palabra){
+    Node* p=dic;
+    int indice;
+    for(int i=0;i<strlen(palabra);i++){
+        indice=indice(palabra[i]);
+        
+        if (p->hijos[indice] == NULL){
+            printf("No se encuentra en el diccionario");
+            return NULL;
+        }else
+        p=p->hijos[indice];
+    }
+    if(p->es_palabra){
+        printf("No se encuentra en el diccionario");
+        return NULL;
+    }
+    return p->significado;
+}
+
+void Palabra(Node* dic,char *palabra){
+    Significado *p=ObtenerSignificados(dic,palabra);
+    printf("\n%s: ", palabra);
+    while (p)
+    {
+        printf("%s\n", p->significado);
+        p=p->next;
+    }
+}
+
+
