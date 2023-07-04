@@ -1,4 +1,6 @@
 #include "arbol.h"
+#define max_palabra 10
+#define max_definicion 200
 #define indice(a) ((int)tolower (a) - 'a')
 
 
@@ -15,7 +17,6 @@ static Node* CreaNodo(){
 static Significado* CreaSignificado(char *significado){
     Significado *newp;
     newp=(Significado*)malloc(sizeof(Significado));
-    strcpy(newp->significado,significado);
     newp->next=NULL;
     newp->significado=(char*)malloc(sizeof(char)*(int)strlen(significado));
     strcpy(newp->significado,significado);
@@ -35,8 +36,7 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
         dic=CreaNodo();
     p=dic;
     for(int i=0;i<strlen(palabra);i++){
-        if (isalpha(palabra[i]))
-            indice=indice(palabra[i]);
+        indice=indice(palabra[i]);
         
         if (p->hijos[indice] == NULL){
             p->hijos[indice]=CreaNodo;
@@ -44,7 +44,7 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
         p=p->hijos[indice];
     }
     p->es_palabra=1;
-    p->significado->significado=CreaSignificado(significado);
+    p->significado->significado=AñadeSignificado(significado,p->significado->significado);
     return dic;
 }   
 
@@ -73,20 +73,23 @@ static void* Elimina(Node* dic){
 }
 
 Node* Cargar(Node* dic,char *N_archivo){
-    char *palabra,*significado;
+    char palabra[max_palabra],significado[max_definicion],anterior[max_palabra];
     if(dic){
         Elimina(dic);
     }
-    FILE *Archivo=fopen(N_archivo,"r");
+    FILE *Archivo=fopen(strcat(N_archivo,".dic"),"r");
     if(!Archivo){
         printf("\nError al abrir archivo\n");
         return NULL;
     }
     while ((fscanf(N_archivo,"%s",palabra))!=EOF)
     {
-        fgets(significado,200,N_archivo);
+        fgets(significado,max_definicion,N_archivo);
         if(palabra=='+'){
-
+            dic=AñadirPalabra(anterior,significado,dic);
+        }else{
+            dic=AñadirPalabra(palabra,significado,dic);
+            strcpy(anterior,palabra);
         }
 
     }
