@@ -1,16 +1,18 @@
 #include "arbol.h"
-#define max_palabra 10
+
+#define max_palabra 15
 #define max_definicion 200
 #define indice(a) ((int)tolower (a) - 'a')
 
 
 static Node* CreaNodo(){
     Node *newp;
-    newp=(Node*)malloc(sizeof(Node));
+    if ((newp=(Node*)malloc(sizeof(Node)))==NULL)
+        printf("error malloc");
     for(int i=0;i<26;i++)
         newp->hijos[i]=NULL;
     newp->es_palabra=false;
-    newp->significado->significado=NULL;
+    newp->significado=NULL;
     return newp;
 }
 
@@ -18,7 +20,6 @@ static Significado* CreaSignificado(char *significado){
     Significado *newp;
     newp=(Significado*)malloc(sizeof(Significado));
     newp->next=NULL;
-    newp->significado=(char*)malloc(sizeof(char)*(int)strlen(significado));
     strcpy(newp->significado,significado);
     return newp;
 }
@@ -35,16 +36,15 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
     if(!dic)
         dic=CreaNodo();
     p=dic;
-    for(int i=0;i<strlen(palabra);i++){
+    for(int i=0;i<(int)strlen(palabra);i++){
         indice=indice(palabra[i]);
-        
         if (p->hijos[indice] == NULL){
-            p->hijos[indice]=CreaNodo;
+            p->hijos[indice]=CreaNodo();
         }else
         p=p->hijos[indice];
     }
-    p->es_palabra=1;
-    p->significado->significado=AñadeSignificado(significado,p->significado->significado);
+    p->es_palabra=true;
+    p->significado=AñadeSignificado(significado,p->significado);
     return dic;
 }   
 
@@ -55,7 +55,7 @@ static void EliminaSignificado(Significado* sig){
     free(sig->significado);
 }
 
-static void* Elimina(Node* dic){
+static void Elimina(Node* dic){
     if(!dic){
         return;
     }
@@ -65,27 +65,29 @@ static void* Elimina(Node* dic){
     for(int i=0;i<26;i++){
         if(dic->hijos[i]!=NULL)
             Elimina(dic->hijos[i]);
-        free(dic->hijos[i]);
     }
     free(dic);
     dic=NULL;
     return;
 }
 
-Node* Cargar(Node* dic,char *N_archivo){
+Node* Cargar(Node* dic, char *N_archivo){
+    char* file;
     char palabra[max_palabra],significado[max_definicion],anterior[max_palabra];
+    puts(N_archivo);
     if(dic){
         Elimina(dic);
     }
-    FILE *Archivo=fopen(strcat(N_archivo,".dic"),"r");
-    if(!Archivo){
+    FILE *Archivo;
+    Archivo=fopen(N_archivo,"r");
+    if(Archivo==NULL){
         printf("\nError al abrir archivo\n");
         return NULL;
     }
-    while ((fscanf(N_archivo,"%s",palabra))!=EOF)
+    while (fscanf(Archivo,"%s",palabra)!=EOF)
     {
-        fgets(significado,max_definicion,N_archivo);
-        if(palabra=='+'){
+        fgets(significado,max_definicion,Archivo);
+        if(palabra[0]=='+'){
             dic=AñadirPalabra(anterior,significado,dic);
         }else{
             dic=AñadirPalabra(palabra,significado,dic);
@@ -94,33 +96,32 @@ Node* Cargar(Node* dic,char *N_archivo){
 
     }
     
-
+return dic;
 }
 
 static Significado *ObtenerSignificados(Node* dic, char *palabra){
     Node* p=dic;
     int indice;
-    for(int i=0;i<strlen(palabra);i++){
+    for(int i=0;i<(int)strlen(palabra);i++){
         indice=indice(palabra[i]);
-        
         if (p->hijos[indice] == NULL){
             printf("No se encuentra en el diccionario");
             return NULL;
         }else
+        if(palabra[i+1]=='\0')
+            break;
         p=p->hijos[indice];
     }
-    if(p->es_palabra){
-        printf("No se encuentra en el diccionario");
-        return NULL;
-    }
+    printf("%d",p->es_palabra);
     return p->significado;
 }
 
 void Palabra(Node* dic,char *palabra){
     Significado *p=ObtenerSignificados(dic,palabra);
-    printf("\n%s: ", palabra);
+    printf("%s",p->significado);
     while (p)
     {
+        printf("\n%s: ", palabra);
         printf("%s\n", p->significado);
         p=p->next;
     }

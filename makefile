@@ -5,3 +5,4 @@ diccionario.o: diccionario.c
 	gcc -c diccionario.c
 main: arbol.o diccionario.o
 	gcc -o main diccionario.o arbol.o
+	rm *.o
