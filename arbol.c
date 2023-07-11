@@ -40,9 +40,10 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
         indice=indice(palabra[i]);
         if (p->hijos[indice] == NULL){
             p->hijos[indice]=CreaNodo();
+            p=p->hijos[indice];
         }else
         p=p->hijos[indice];
-    }
+    };
     p->es_palabra=true;
     p->significado=AñadeSignificado(significado,p->significado);
     return dic;
@@ -88,9 +89,9 @@ Node* Cargar(Node* dic, char *N_archivo){
     {
         fgets(significado,max_definicion,Archivo);
         if(palabra[0]=='+'){
-            dic=AñadirPalabra(anterior,significado,dic);
+            dic=AñadirPalabra(anterior,significado+1,dic);
         }else{
-            dic=AñadirPalabra(palabra,significado,dic);
+            dic=AñadirPalabra(palabra,significado+1,dic);
             strcpy(anterior,palabra);
         }
 
@@ -105,26 +106,49 @@ static Significado *ObtenerSignificados(Node* dic, char *palabra){
     for(int i=0;i<(int)strlen(palabra);i++){
         indice=indice(palabra[i]);
         if (p->hijos[indice] == NULL){
-            printf("No se encuentra en el diccionario");
+            printf("No se encuentra en el diccionario\n");
             return NULL;
         }else
-        if(palabra[i+1]=='\0')
-            break;
         p=p->hijos[indice];
     }
-    printf("%d",p->es_palabra);
     return p->significado;
 }
 
 void Palabra(Node* dic,char *palabra){
     Significado *p=ObtenerSignificados(dic,palabra);
-    printf("%s",p->significado);
+    if(p)
+        printf("%s: ",palabra);
     while (p)
     {
-        printf("\n%s: ", palabra);
-        printf("%s\n", p->significado);
+        printf("%s", p->significado);
         p=p->next;
     }
 }
 
+void Prefijo(Node* dic, char *prefijo){
+    Node* p;
+    Significado* list;
+    int indice;
+    for(int i=0;i<(int)strlen(prefijo);i++){
+        indice=indice(prefijo[i]);
+        if (dic->hijos[indice] == NULL){
+            printf("No se encuentra en el diccionario");
+            return NULL;
+        }else
+        dic=dic->hijos[indice];
+    }
+    p=dic;
 
+    for(int i=0;i<26;i++){
+        if(p->es_palabra){
+            list=p->significado;
+            while (list)
+            {
+                printf("%s",list->significado);
+                list=list->next;
+            }
+            
+        }
+    }
+        
+}

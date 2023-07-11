@@ -19,6 +19,8 @@ while (1)
         break;
     case 's':
         Palabra(dic,&opcion[2]);
+    case 'p':
+        Prefijo(dic,opcion[2]);
     default:
         break;
     }
