@@ -8,8 +8,10 @@ int main(){
 
 while (1)
 {
+    printf("Escriba un comando con su argumento:\n");
     fgets(opcion,20, stdin);
     strtok(opcion,"\n");
+   // system("clear");
     switch (opcion[0])
     {
     case 'q':
@@ -19,8 +21,12 @@ while (1)
         break;
     case 's':
         Palabra(dic,&opcion[2]);
+        break;
     case 'p':
-        Prefijo(dic,opcion[2]);
+        Prefijo(dic,&opcion[2]);
+        break;
+    case 'h':
+        help();
     default:
         break;
     }

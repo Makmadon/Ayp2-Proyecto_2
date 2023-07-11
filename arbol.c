@@ -1,5 +1,12 @@
 #include "arbol.h"
 
+#define ayuda "Uso:[opcion] [argumento]\n Opciones validas:\n\
+l Carga el archivo desde el nombre indicado como argumento con su extension\n\
+s Busca el significado de la palabra indicada como argumento\n\
+p Imprime todos los significados de las palabras que comienzan con el prefijo\n\
+h Muestra este mensaje de ayuda\n\
+q Sale de la aplicacion"
+
 #define max_palabra 15
 #define max_definicion 200
 #define indice(a) ((int)tolower (a) - 'a')
@@ -54,6 +61,7 @@ static void EliminaSignificado(Significado* sig){
         return;
     EliminaSignificado(sig->next);
     free(sig->significado);
+    return;
 }
 
 static void Elimina(Node* dic){
@@ -75,9 +83,9 @@ static void Elimina(Node* dic){
 Node* Cargar(Node* dic, char *N_archivo){
     char* file;
     char palabra[max_palabra],significado[max_definicion],anterior[max_palabra];
-    puts(N_archivo);
     if(dic){
         Elimina(dic);
+        dic=NULL;
     }
     FILE *Archivo;
     Archivo=fopen(N_archivo,"r");
@@ -125,6 +133,27 @@ void Palabra(Node* dic,char *palabra){
     }
 }
 
+static int recorre(Node* dic){
+    Significado* list;
+    if(dic->es_palabra){
+        list=dic->significado;
+        while (list)
+            {
+                printf("%s",list->significado);
+                list=list->next;
+            }
+        }
+    for(int i=0;i<26;i++){
+        if(dic->hijos[i])
+            recorre(dic->hijos[i]);
+    }
+    return 1;
+}
+
+void help(){
+    printf(ayuda);
+}
+
 void Prefijo(Node* dic, char *prefijo){
     Node* p;
     Significado* list;
@@ -132,23 +161,13 @@ void Prefijo(Node* dic, char *prefijo){
     for(int i=0;i<(int)strlen(prefijo);i++){
         indice=indice(prefijo[i]);
         if (dic->hijos[indice] == NULL){
-            printf("No se encuentra en el diccionario");
-            return NULL;
+            printf("No se encuentra en el diccionario\n");
+            return ;
         }else
         dic=dic->hijos[indice];
     }
     p=dic;
 
-    for(int i=0;i<26;i++){
-        if(p->es_palabra){
-            list=p->significado;
-            while (list)
-            {
-                printf("%s",list->significado);
-                list=list->next;
-            }
-            
-        }
-    }
+    recorre(dic);
         
 }

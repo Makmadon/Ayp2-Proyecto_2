@@ -24,6 +24,8 @@ Node* Cargar(Node* dic, char* N_archivo);
 
 void Palabra(Node* dic,char *palabra);
 
+void help();
+
 void Prefijo(Node* dic, char *prefijo);
 
 
