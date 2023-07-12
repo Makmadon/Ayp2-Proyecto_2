@@ -147,13 +147,11 @@ static Significado *ObtenerSignificados(Node* dic, char *palabra){
     Node* p=dic;
     int indice;
  //recorre de la misma forma que en el asignar
- printf("%s", palabra);
     for(int i=0;i<(int)strlen(palabra);i++){
         indice=indice(palabra[i]);
 //en caso de que el arreglo con el indice indique a null
 //significa que la palabra no se encuentra en el diccionario
         if (p->hijos[indice] == NULL){
-            printf("No se encuentra en el diccionario\n");
             return NULL;
         }else
         p=p->hijos[indice];
@@ -166,6 +164,8 @@ static Significado *ObtenerSignificados(Node* dic, char *palabra){
 void Palabra(Node* dic,char *palabra){
  //la lista de significados es obtenida
     Significado *p=ObtenerSignificados(dic,palabra);
+    if(!p)
+        printf("No se encuentra en el diccionario\n");
  //En caso de que haya significados, se imprime la palabra buscada al principio
     if(p)
         printf("%s: ",palabra);
