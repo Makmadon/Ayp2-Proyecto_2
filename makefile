@@ -4,5 +4,5 @@ arbol.o:  arbol.c
 diccionario.o: diccionario.c
 	gcc -c diccionario.c
 diccionario: arbol.o diccionario.o
-	gcc -o main diccionario.o arbol.o
+	gcc -o diccionario diccionario.o arbol.o
 	rm *.o

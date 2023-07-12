@@ -1,4 +1,5 @@
 #include "arbol.h"
+
 /*Macro que sera el mensaje de ayuda*/
 #define ayuda "Uso:[opcion] [argumento]\n Opciones validas:\n\
 l Carga el archivo desde el nombre indicado como argumento con su extension\n\
@@ -18,7 +19,7 @@ static Node* CreaNodo(){
     Node *newp;
     if ((newp=(Node*)malloc(sizeof(Node)))==NULL){
         printf("error malloc");
-        return NULL
+        return NULL;
     }
 // asigna NULL a todos los apuntadores del arreglo
     for(int i=0;i<26;i++)
@@ -72,6 +73,7 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
     p->es_palabra=true;
     p->significado=AñadeSignificado(significado,p->significado);
     return dic;
+}
 }   
 
 //Funcion que hace free a todos los nodos de los significados
@@ -123,8 +125,7 @@ Node* Cargar(Node* dic, char *N_archivo){
     }
 //Se lee la primera palabra, fscanf leera la entrada hasta el primer espacio en blanco
 //esta es la palabra a ingresar
-    while (fscanf(Archivo,"%s",palabra)!=EOF)
-    {
+    while (fscanf(Archivo,"%s",palabra)!=EOF){
 //fgets leera hasta el primer salto de linea, este es el significado
         fgets(significado,max_definicion,Archivo);
 //si la palabra leida es el caracter '+' significa que se añade el significado a la palabra anterior
@@ -135,7 +136,6 @@ Node* Cargar(Node* dic, char *N_archivo){
             dic=AñadirPalabra(palabra,significado+1,dic);
             strcpy(anterior,palabra);
         }
-
     }
 //se devuelve el diccionario
 return dic;
