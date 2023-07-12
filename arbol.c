@@ -63,18 +63,18 @@ static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
         //calcula el indice del caracter
         indice=indice(palabra[i]);
         //verifica si el apuntador es nullo, e caso de ser verdadero lo crea y avanza
-        if (p->hijos[indice] == NULL){
+        if (p->hijos[indice] == NULL)
             p->hijos[indice]=CreaNodo();
         //en caso de que no sea nulo significa que la clave ya existe, por lo que solo avanza
         p=p->hijos[indice];
-    };
+    }
     //al salir del ciclo es que es el final de la palabra
     //se indica que es la palbra con la bandera y se añade el significado
     p->es_palabra=true;
     p->significado=AñadeSignificado(significado,p->significado);
     return dic;
 }
-}   
+  
 
 //Funcion que hace free a todos los nodos de los significados
 static void EliminaSignificado(Significado* sig){
@@ -147,6 +147,7 @@ static Significado *ObtenerSignificados(Node* dic, char *palabra){
     Node* p=dic;
     int indice;
  //recorre de la misma forma que en el asignar
+ printf("%s", palabra);
     for(int i=0;i<(int)strlen(palabra);i++){
         indice=indice(palabra[i]);
 //en caso de que el arreglo con el indice indique a null
