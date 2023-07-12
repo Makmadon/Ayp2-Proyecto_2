@@ -26,11 +26,14 @@ typedef struct nodo{
 /*Funcion que recibe el nombre del archivo y crea el TAD diccionario
 con la informacion del archivo*/
 Node* Cargar(Node* dic, char* N_archivo);
+
 /*Funcion que imprime el significado si la palabra 
 se encuentra almacenada, de lo contrario imprime que no se encuentra*/
 void Palabra(Node* dic,char *palabra);
+
 /*Funcion que imprime un mensaje de ayuda*/
 void help();
+
 /*Imprime todos los significados de palabras que tengan de prefijo el argumento ingresado*/
 void Prefijo(Node* dic, char *prefijo);
 
