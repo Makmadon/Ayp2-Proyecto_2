@@ -1,5 +1,5 @@
 #include "arbol.h"
-
+/*Macro que sera el mensaje de ayuda*/
 #define ayuda "Uso:[opcion] [argumento]\n Opciones validas:\n\
 l Carga el archivo desde el nombre indicado como argumento con su extension\n\
 s Busca el significado de la palabra indicada como argumento\n\
@@ -7,15 +7,20 @@ p Imprime todos los significados de las palabras que comienzan con el prefijo\n\
 h Muestra este mensaje de ayuda\n\
 q Sale de la aplicacion"
 
+/*Se define los tamaños maximo*/
 #define max_palabra 15
 #define max_definicion 200
+/*macro para calcular el indice de las claves para construir el TAD*/
 #define indice(a) ((int)tolower (a) - 'a')
 
-
+ //Funcion que crea un nodo para el diccionario
 static Node* CreaNodo(){
     Node *newp;
-    if ((newp=(Node*)malloc(sizeof(Node)))==NULL)
+    if ((newp=(Node*)malloc(sizeof(Node)))==NULL){
         printf("error malloc");
+        return NULL
+    }
+// asigna NULL a todos los apuntadores del arreglo
     for(int i=0;i<26;i++)
         newp->hijos[i]=NULL;
     newp->es_palabra=false;
@@ -23,34 +28,46 @@ static Node* CreaNodo(){
     return newp;
 }
 
+// Crea un nodo de la estructura que contiene los significados
 static Significado* CreaSignificado(char *significado){
     Significado *newp;
-    newp=(Significado*)malloc(sizeof(Significado));
+    if ((newp=(Significado*)malloc(sizeof(Significado)))==NULL){
+        printf("Error en malloc");
+        return NULL;
+    }
     newp->next=NULL;
+    //copia el significado dentro de la estructura
     strcpy(newp->significado,significado);
     return newp;
 }
 
+//Añade al inicio de la lista de significados un nuevo significado
 static Significado *AñadeSignificado(char *significado, Significado* list){
     Significado *newp=CreaSignificado(significado);
     newp->next=list;
     return newp;
 }
 
+//Añade palabras en la estructura
 static Node* AñadirPalabra(char* palabra, char* significado, Node* dic){
     Node* p;
     int indice;
+//Si el diccionario no existe, se crea
     if(!dic)
         dic=CreaNodo();
+// se usa un apuntador para moverse en la estructura, comenzando por la raiz
     p=dic;
+// avanza con un contador hasta el final de el largo de la palabra a ingresar
     for(int i=0;i<(int)strlen(palabra);i++){
+        //calcula el indice del caracter
         indice=indice(palabra[i]);
+        //verifica si el apuntador es nullo, e caso de ser verdadero lo crea y avanza
         if (p->hijos[indice] == NULL){
             p->hijos[indice]=CreaNodo();
-            p=p->hijos[indice];
-        }else
+        //en caso de que no sea nulo significa que la clave ya existe, por lo que solo avanza
         p=p->hijos[indice];
     };
+    //al salir del ciclo 
     p->es_palabra=true;
     p->significado=AñadeSignificado(significado,p->significado);
     return dic;
